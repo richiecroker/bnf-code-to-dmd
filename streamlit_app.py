@@ -28,8 +28,10 @@ data = get_fresh_data_if_needed()
 # Convert to a DataFrame
 df = pd.DataFrame(data)
 
+
 # Assign new column names
 df.columns = ['Ingredient dm+d code', 'Ingredient name', 'Presentation Code', 'Presentation name', 'Unit strength (mg)', 'Unit volume (ml)', 'OME', 'OME per unit dose']
+df['Ingredient dm+d code'] = df['Ingredient dm+d code'].astype(str) # some vmps show as long number incorrectly, so turn into string
 df = df.sort_values(by=["Ingredient name", "Presentation name"], ascending=[True, True])
 
 # Filter by ingredient (dropdown)

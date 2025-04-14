@@ -9,16 +9,14 @@ from data_loader import get_fresh_data_if_needed
 st.set_page_config(layout="wide")  # This ensures the layout is wide and takes the full screen
 
 
-st.title("OpenPrescribing Oral Morphine Equivalence list")
+st.title("Mapping BNF codes to dm+d")
 st.markdown(
 """
-In 2017 we created a [tool to show the total Oral Morphine Equivalence (OME)](https://openprescribing.net/measure/opioidome/national/england/) of prescribing in practices, and [published a paper to describe our findings](https://www.thelancet.com/journals/lanpsy/article/PIIS2215-0366%2818%2930471-1/abstract).
+We have had a request from NHS England:
 
-Originally we created a spreadsheet and manually mapped drugs at BNF presentation level to the appropriate OME value.  Since then some of the OME values have changed, and new products were not included, and so we moved to using a dictionary of medicines + devices (dm+d) based automatic calculation instead, which uses a map at [ingredient and route level](https://github.com/bennettoxford/openprescribing/blob/main/openprescribing/measures/tables/opioid_ing_form_ome.csv).  However, this means that the OME value for each product is no longer openly available.  
+>Our initial need is to have a reference file that can be used to map data in BNF code form (from NHS BSA) to drug information in dm+d (SNOMED) form (at VMP/AMP level but also with VTM information).
 
-A full methodology on the new OME calculations are [here](https://github.com/bennettoxford/openprescribing/pull/2907).  
-
-By using a modified version of the SQL in the method above, we can create a list of OME values at BNF presentation level. You can filter by opioid ingredient, or download the whole list by clicking on the button below the table.
+We hold this information in the BQ database, and should be able to create a query to deliver this need.
 """
 )
 
@@ -29,19 +27,14 @@ data = get_fresh_data_if_needed()
 df = pd.DataFrame(data)
 
 
-# Assign new column names
-df.columns = ['Ingredient dm+d code', 'Ingredient name', 'Presentation Code', 'Presentation name', 'Unit strength (mg)', 'Unit volume (ml)', 'OME', 'OME per unit dose']
-df['Ingredient dm+d code'] = df['Ingredient dm+d code'].astype(str) # some vmps show as long number incorrectly, so turn into string
-df = df.sort_values(by=["Ingredient name", "Presentation name"], ascending=[True, True])
+# Assign new column types
 
-# Filter by ingredient (dropdown)
-selected_ing = st.selectbox("Filter by opioid ingredient", ["All"] + list(df["Ingredient name"].unique()))
-# Apply Filters
-filtered_df = df[
-    ((df["Ingredient name"] == selected_ing) | (selected_ing == "All"))
+df['id'] = df['id'].astype('Int64')  # ensure csv is integer
+df['vtm'] = df['vtm'].astype('Int64') # ensure csv is integer
+df['vmp_previous'] = df['vmp_previous'].astype('Int64') # ensure csv is integer
 ]
 # Show an interactive, filterable table
-st.dataframe(filtered_df, use_container_width=True, hide_index=True)
+st.dataframe(df, use_container_width=True, hide_index=True)
 
 # Function to convert the dataframe to CSV and return it as a downloadable link
 def convert_df_to_csv(df):
@@ -50,8 +43,8 @@ def convert_df_to_csv(df):
 # Download button
 csv = convert_df_to_csv(df)
 st.download_button(
-    label="Download whole table as CSV",
+    label="Download BNF code to dm+d as CSV",
     data=csv,
-    file_name="OpenPrescribing OME values.csv",
+    file_name="BNF code to dm+d map.csv",
     mime="text/csv",
 )

@@ -18,7 +18,7 @@ def load_sql(path: str) -> str:
         return file.read()
     
 # Load your specific query
-ome_sql = load_sql("sql/ome.sql")
+dmd_sql = load_sql("sql/dmd.sql")
 date_sql = load_sql("sql/max_month.sql")
 
 # Generic cached query runner
@@ -45,9 +45,9 @@ def get_fresh_data_if_needed():
     if current_max != cached_max:
         st.cache_data.clear()  # Invalidate all cached data
         # Re-run to re-cache everything
-        data = run_query(ome_sql)
+        data = run_query(dmd_sql)
         get_cached_max_month()  # Update cached max_month
     else:
-        data = run_query(ome_sql)  # Cached version used
+        data = run_query(dmd_sql)  # Cached version used
 
     return data

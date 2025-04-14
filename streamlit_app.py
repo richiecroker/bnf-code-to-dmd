@@ -10,7 +10,8 @@ st.set_page_config(layout="wide")  # This ensures the layout is wide and takes t
 
 
 st.title("OpenPrescribing Oral Morphine Equivalence list")
-st.markdown("""
+st.markdown(
+"""
 In 2017 we created a [tool to show the total Oral Morphine Equivalence (OME)](https://openprescribing.net/measure/opioidome/national/england/) of prescribing in practices, and [published a paper to describe our findings](https://www.thelancet.com/journals/lanpsy/article/PIIS2215-0366%2818%2930471-1/abstract).
 
 Originally we created a spreadsheet and manually mapped drugs at BNF presentation level to the appropriate OME value.  Since then some of the OME values have changed, and new products were not included, and so we moved to using a dictionary of medicines + devices (dm+d) based automatic calculation instead, which uses a map at [ingredient and route level](https://github.com/bennettoxford/openprescribing/blob/main/openprescribing/measures/tables/opioid_ing_form_ome.csv).  However, this means that the OME value for each product is no longer openly available.  
@@ -18,7 +19,8 @@ Originally we created a spreadsheet and manually mapped drugs at BNF presentatio
 A full methodology on the new OME calculations are [here](https://github.com/bennettoxford/openprescribing/pull/2907).  
 
 By using a modified version of the SQL in the method above, we can create a list of OME values at BNF presentation level. You can filter by opioid ingredient, or download the whole list by clicking on the button below the table.
-""")
+"""
+)
 
 
 data = get_fresh_data_if_needed()

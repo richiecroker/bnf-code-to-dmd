@@ -2,7 +2,6 @@
 
 import streamlit as st
 import pandas as pd
-from st_aggrid import AgGrid
 from google.oauth2 import service_account
 from google.cloud import bigquery
 

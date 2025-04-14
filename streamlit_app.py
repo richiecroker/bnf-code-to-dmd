@@ -32,7 +32,7 @@ df = pd.DataFrame(data)
 df['id'] = df['id'].astype('Int64')  # ensure csv is integer
 df['vtm'] = df['vtm'].astype('Int64') # ensure csv is integer
 df['vmp_previous'] = df['vmp_previous'].astype('Int64') # ensure csv is integer
-]
+
 # Show an interactive, filterable table
 st.dataframe(df, use_container_width=True, hide_index=True)
 

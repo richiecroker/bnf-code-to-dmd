@@ -63,23 +63,11 @@ st.download_button(
 
 # --- direct feed ---
 params = st.query_params
-if params.get("format") == ["csv"]:
-    # Completely hide Streamlit interface
-    st.markdown("""
-    <style>
-    .stApp > header {display: none !important;}
-    .stApp > .main {padding: 0 !important;}
-    .stDeployButton {display: none !important;}
-    .stDecoration {display: none !important;}
-    footer {display: none !important;}
-    .stToolbar {display: none !important;}
-    .stActionButton {display: none !important;}
-    div[data-testid="stSidebar"] {display: none !important;}
-    div[data-testid="stStatusWidget"] {display: none !important;}
-    </style>
-    """, unsafe_allow_html=True)
-    
-    # Output ONLY the CSV content
-    csv_content = df.to_csv(index=False)
-    st.text(csv_content)
+
+# Optional: set a secret key to restrict access
+SECRET_KEY = "MYSECRET"
+
+if params.get("format") == "csv" and (params.get("key") == SECRET_KEY or SECRET_KEY is None):
+    # Output raw CSV directly; stops further UI rendering
+    st.write(df.to_csv(index=False))
     st.stop()

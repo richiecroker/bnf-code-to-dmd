@@ -4,17 +4,31 @@ import streamlit as st
 import pandas as pd
 from data_loader import get_fresh_data_if_needed
 
-# Debug query parameters
-params = st.query_params
-st.write("Debug - All query params:", dict(params))
-st.write("Debug - format param:", params.get("format"))
-st.write("Debug - format param type:", type(params.get("format")))
-
-# Your current check
-if params.get("format") == ["csv"]:
-    st.write("CSV mode detected!")
-else:
-    st.write("CSV mode NOT detected")
+# Handle different possible formats of the parameter
+if format_param:
+    if isinstance(format_param, list):
+        format_param = format_param[0]
+    
+    if format_param.lower() == "csv":
+        # Hide Streamlit UI
+        st.markdown("""
+        <style>
+        .stApp > header {display: none !important;}
+        .stApp > .main {padding: 0 !important;}
+        .stDeployButton {display: none !important;}
+        .stDecoration {display: none !important;}
+        footer {display: none !important;}
+        .stToolbar {display: none !important;}
+        </style>
+        """, unsafe_allow_html=True)
+        
+        # Your data processing to create df
+        # df = your_data_processing_function()
+        
+        # Output raw CSV
+        csv_content = df.to_csv(index=False)
+        st.text(csv_content)
+        st.stop()
     
 # Full Width Table
 st.set_page_config(layout="wide")  # This ensures the layout is wide and takes the full screen
@@ -63,11 +77,26 @@ st.download_button(
 
 # --- direct feed ---
 params = st.query_params
+format_param = params.get("format")
 
-# Optional: set a secret key to restrict access
-SECRET_KEY = "MYSECRET"
-
-if params.get("format") == "csv" and (params.get("key") == SECRET_KEY or SECRET_KEY is None):
-    # Output raw CSV directly; stops further UI rendering
-    st.write(df.to_csv(index=False))
-    st.stop()
+if format_param:
+    if isinstance(format_param, list):
+        format_param = format_param[0]
+    
+    if format_param.lower() == "csv":
+        # Hide Streamlit UI
+        st.markdown("""
+        <style>
+        .stApp > header {display: none !important;}
+        .stApp > .main {padding: 0 !important;}
+        .stDeployButton {display: none !important;}
+        .stDecoration {display: none !important;}
+        footer {display: none !important;}
+        .stToolbar {display: none !important;}
+        </style>
+        """, unsafe_allow_html=True)
+        
+        # Output raw CSV
+        csv_content = df.to_csv(index=False)
+        st.text(csv_content)
+        st.stop()

@@ -45,6 +45,21 @@ csv = convert_df_to_csv(df)
 st.download_button(
     label="Download BNF code to dm+d as CSV",
     data=csv,
-    file_name="BNF code to dm+d map.csv",
+    file_name="bnf_code_to_dmd_map.csv",
     mime="text/csv",
 )
+
+
+# --- direct feed ---
+query_params = st.query_params
+if query_params.get("format") == "csv":
+    st.response.headers["Content-Disposition"] = "attachment; filename=bnf_code_to_dmd_map.csv.csv"
+    st.response.headers["Content-Type"] = "text/csv"
+    st.write(df.to_csv(index=False))
+    st.stop()
+else:
+    st.markdown("### Direct CSV feed")
+    st.markdown(
+        "Connect Power BI to this URL for raw CSV:\n\n"
+        "`https://<your-app-url>/?format=csv`"
+    )

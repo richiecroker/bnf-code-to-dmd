@@ -53,6 +53,22 @@ st.download_button(
 # --- direct feed ---
 params = st.query_params
 if params.get("format") == ["csv"]:
-    # Output CSV only, no UI, no extra text
-    st.code(df.to_csv(index=False), language=None)  # displays raw CSV text
+    # Completely hide Streamlit interface
+    st.markdown("""
+    <style>
+    .stApp > header {display: none !important;}
+    .stApp > .main {padding: 0 !important;}
+    .stDeployButton {display: none !important;}
+    .stDecoration {display: none !important;}
+    footer {display: none !important;}
+    .stToolbar {display: none !important;}
+    .stActionButton {display: none !important;}
+    div[data-testid="stSidebar"] {display: none !important;}
+    div[data-testid="stStatusWidget"] {display: none !important;}
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Output ONLY the CSV content
+    csv_content = df.to_csv(index=False)
+    st.text(csv_content)
     st.stop()

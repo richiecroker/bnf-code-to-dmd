@@ -4,7 +4,18 @@ import streamlit as st
 import pandas as pd
 from data_loader import get_fresh_data_if_needed
 
+# Debug query parameters
+params = st.query_params
+st.write("Debug - All query params:", dict(params))
+st.write("Debug - format param:", params.get("format"))
+st.write("Debug - format param type:", type(params.get("format")))
 
+# Your current check
+if params.get("format") == ["csv"]:
+    st.write("CSV mode detected!")
+else:
+    st.write("CSV mode NOT detected")
+    
 # Full Width Table
 st.set_page_config(layout="wide")  # This ensures the layout is wide and takes the full screen
 

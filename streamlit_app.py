@@ -52,8 +52,8 @@ st.download_button(
 
 # --- direct feed ---
 query_params = st.query_params
-query_params.get("format") == "csv":
-    st.response.headers["Content-Disposition"] = "attachment; filename=bnf_code_to_dmd_map.csv.csv"
+if query_params.get("format") == "csv":   # ← needs the if
+    st.response.headers["Content-Disposition"] = "attachment; filename=BNF_to_dmd_map.csv"
     st.response.headers["Content-Type"] = "text/csv"
     st.write(df.to_csv(index=False))
     st.stop()

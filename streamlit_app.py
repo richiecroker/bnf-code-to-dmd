@@ -1,5 +1,4 @@
 # streamlit_app.py
-# streamlit_app.py
 import streamlit as st
 import pandas as pd
 from data_loader import get_fresh_data_if_needed
@@ -26,6 +25,19 @@ if format_param:
     if format_param.lower() == "csv":
         # CSV mode - output only CSV data
         df = create_dataframe()
+        
+        # Set headers for better compatibility
+        st.markdown("""
+        <style>
+        .stApp > header {display: none !important;}
+        .stApp > .main {padding: 0 !important;}
+        .stDeployButton {display: none !important;}
+        .stDecoration {display: none !important;}
+        footer {display: none !important;}
+        .stToolbar {display: none !important;}
+        </style>
+        """, unsafe_allow_html=True)
+        
         csv_content = df.to_csv(index=False)
         st.text(csv_content)
         st.stop()  # This prevents the rest of the app from running

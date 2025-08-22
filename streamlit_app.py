@@ -51,8 +51,8 @@ st.download_button(
 
 
 # --- direct feed ---
-query_params = st.query_params
-if query_params.get("format") == "csv":
-    # Output CSV text only, no Streamlit UI, no index
-    st.text(df.to_csv(index=False))
+params = st.experimental_get_query_params()
+if params.get("format") == ["csv"]:
+    # Output CSV only, no UI, no extra text
+    st.code(df.to_csv(index=False), language=None)  # displays raw CSV text
     st.stop()

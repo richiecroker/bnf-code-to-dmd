@@ -4,32 +4,7 @@ import streamlit as st
 import pandas as pd
 from data_loader import get_fresh_data_if_needed
 
-# Handle different possible formats of the parameter
-if format_param:
-    if isinstance(format_param, list):
-        format_param = format_param[0]
-    
-    if format_param.lower() == "csv":
-        # Hide Streamlit UI
-        st.markdown("""
-        <style>
-        .stApp > header {display: none !important;}
-        .stApp > .main {padding: 0 !important;}
-        .stDeployButton {display: none !important;}
-        .stDecoration {display: none !important;}
-        footer {display: none !important;}
-        .stToolbar {display: none !important;}
-        </style>
-        """, unsafe_allow_html=True)
-        
-        # Your data processing to create df
-        # df = your_data_processing_function()
-        
-        # Output raw CSV
-        csv_content = df.to_csv(index=False)
-        st.text(csv_content)
-        st.stop()
-    
+   
 # Full Width Table
 st.set_page_config(layout="wide")  # This ensures the layout is wide and takes the full screen
 

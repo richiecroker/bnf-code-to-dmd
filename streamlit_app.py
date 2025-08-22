@@ -52,8 +52,7 @@ st.download_button(
 
 # --- direct feed ---
 query_params = st.query_params
-if query_params.get("format") == "csv":   # ← needs the if
-    st.response.headers["Content-Disposition"] = "attachment; filename=BNF_to_dmd_map.csv"
-    st.response.headers["Content-Type"] = "text/csv"
-    st.write(df.to_csv(index=False))
+if query_params.get("format") == "csv":
+    # Output CSV text only, no Streamlit UI, no index
+    st.text(df.to_csv(index=False))
     st.stop()
